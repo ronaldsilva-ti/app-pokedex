@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, FlatList, Text, ScrollView, Modal } from 'react-native';
 import Wrapper from '../../components/Wrapper';
 import Card from '../../components/Card';
+import { ModalizeComponent } from '../../components/Modalize';
 import { SearchBar, ContainerList } from './styles';
 
 const App = () => {
@@ -55,7 +56,7 @@ const App = () => {
         onChangeText={onChangeSearch}
         value={isSearch}
       />
-      <ScrollView>
+      {/* <ScrollView>
         <ContainerList>
           <FlatList
             data={DATA}
@@ -64,7 +65,8 @@ const App = () => {
             numColumns={numColumns}
           />
         </ContainerList>
-      </ScrollView>
+      </ScrollView> */}
+      <ModalizeComponent />
     </Wrapper>
   );
 };
