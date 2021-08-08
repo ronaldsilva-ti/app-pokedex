@@ -5,6 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import Home from './modules/Home';
+import Plus from './modules/Plus';
 const Tab = createBottomTabNavigator();
 
 const icons = {
@@ -43,7 +44,7 @@ const Navigation = () => {
       />
       <Tab.Screen
         name="Plus"
-        component={Home}
+        component={Plus}
         options={{
           title: 'plus',
         }}
