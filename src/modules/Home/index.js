@@ -1,12 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, FlatList, Text, ScrollView, Modal } from 'react-native';
+import { openModalAction, closeModalAction } from '../../store/ducks/modal'
+import { fetchAll } from '../../store/fetchActions/pokedexFetchActions';
+import { useSelector, useDispatch } from 'react-redux';
 import Wrapper from '../../components/Wrapper';
 import Card from '../../components/Card';
 import { ModalizeComponent } from '../../components/Modalize';
 import { SearchBar, ContainerList } from './styles';
+import usePokeApi from '../../utils/hooks/usePokeApi';
 
 const App = () => {
+  const dispatch = useDispatch();
   const [isSearch, setIsSearch] = useState('');
+  const [pokemon, setPokemons] = useState([])
+
+  const [load, loadInfo] = usePokeApi({
+    url:'https://pokeapi.co/api/v2/pokemon/',
+    method:'get',
+    params:{
+      offset:'0',
+      limit:'10',
+      name: isSearch || undefined
+    },
+    onCompleted:(response) => {
+      setPokemons(response)
+    }
+  });
+
+  useEffect(() => {
+    load()
+  },[isSearch])
+
+
   const numColumns = '2';
   const DATA = [
     {
@@ -42,8 +67,8 @@ const App = () => {
       title: 'Third Item',
     },
   ];
-  const onChangeSearch = (query) => setIsSearch(query);
-  const onSelectedItem = (selected) => console.log(selected);
+  const onChangeSearch = (query) => setIsSearch(query.toLowerCase());
+  const onSelectedItem = (selected) => dispatch(openModalAction());
 
   const renderItem = ({ item }) => {
     return <Card item={item} onSelected={onSelectedItem} />;
@@ -56,16 +81,16 @@ const App = () => {
         onChangeText={onChangeSearch}
         value={isSearch}
       />
-      {/* <ScrollView>
+      <ScrollView>
         <ContainerList>
           <FlatList
-            data={DATA}
+            data={pokemon}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             numColumns={numColumns}
           />
         </ContainerList>
-      </ScrollView> */}
+      </ScrollView>
       <ModalizeComponent />
     </Wrapper>
   );

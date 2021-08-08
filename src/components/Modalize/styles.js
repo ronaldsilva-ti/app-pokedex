@@ -7,3 +7,5 @@ export const Header = styled.View`
 export const ButtonCloseModal = styled.TouchableOpacity`
   align-self: flex-end;
 `;
+
+export const Content = styled.View``;

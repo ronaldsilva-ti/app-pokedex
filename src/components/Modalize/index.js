@@ -1,33 +1,42 @@
-/* eslint-disable prettier/prettier */
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { openModalAction, closeModalAction } from '../../store/ducks/modal';
 import { Modalize } from 'react-native-modalize';
-import { Header, ButtonCloseModal } from './styles';
+import { Header, ButtonCloseModal, Content } from './styles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useSelector, useDispatch } from 'react-redux';
 
 export const ModalizeComponent = () => {
+  const { openModal } = useSelector((state) => state.modal);
   const modalizeRef = useRef(null);
+  const dispatch = useDispatch();
 
-  function onOpen() {
-    modalizeRef.current?.open();
-  }
+  useEffect(() => {
+    if (openModal) {
+      modalizeRef.current?.open();
+    } else {
+      modalizeRef.current?.close();
+    }
+  }, [openModal]);
 
-  function onClose() {
-    modalizeRef.current?.close();
-  }
+  const onOpen = () => dispatch(openModalAction());
+
+  const onClose = () => dispatch(closeModalAction());
 
   return (
     <>
-      <TouchableOpacity onPress={onOpen}>
+      {/* <TouchableOpacity onPress={onOpen}>
         <Text style={{ color: 'white' }}>Open the modal</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <Modalize ref={modalizeRef} snapPoint={600} modalHeight={650}>
-        <Header>
-          <ButtonCloseModal onPress={onClose}>
-            <AntDesign name="closesquareo" size={30} />
-          </ButtonCloseModal>
-        </Header>
+        <Content>
+          <Header>
+            <ButtonCloseModal onPress={onClose}>
+              <AntDesign name="closesquareo" size={30} />
+            </ButtonCloseModal>
+          </Header>
+        </Content>
       </Modalize>
     </>
   );
