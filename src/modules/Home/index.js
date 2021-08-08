@@ -68,7 +68,7 @@ const App = () => {
     },
   ];
   const onChangeSearch = (query) => setIsSearch(query.toLowerCase());
-  const onSelectedItem = (selected) => dispatch(openModalAction());
+  const onSelectedItem = (selected) => dispatch(openModalAction(selected));
 
   const renderItem = ({ item }) => {
     return <Card item={item} onSelected={onSelectedItem} />;
